@@ -1,41 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { CreateDto } from './dto/create.dto';
 import { UpdateDto } from './dto/update.dto';
-import { BaseService } from 'src/base';
+import { BaseService } from 'src/base.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Response } from 'express';
-import { User } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
+import { CrudService } from 'src/crud.service';
 
 @Injectable()
-export class UserService extends BaseService {
+export class UserService extends CrudService<
+  Prisma.UserDelegate,
+  Omit<User, 'id' & 'createdAt' & 'updatedAt'>
+> {
   constructor(private prisma: PrismaService) {
-    super();
-  }
-  create(createDto: CreateDto) {
-    return 'This action adds a new ';
-  }
-
-  async findAll(res: Response, offset = 0, limit = 10) {
-    const users = await this.prisma.user.findMany({
-      skip: offset,
-      take: limit,
-    });
-    return this.onSuccessAsList<User>(res, users);
-  }
-
-  findOne(id: number) {
-    return `This action returns a #id `;
-  }
-
-  update(id: number, updateDto: UpdateDto) {
-    return `This action updates a #id `;
-  }
-
-  remove(id: number) {
-    return `This action removes a #id `;
-  }
-
-  getMe() {
-    return 'This action adds a new ';
+    super(prisma.user);
   }
 }

@@ -1,5 +1,6 @@
 import { Injectable, OnModuleInit, INestApplication } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import * as _ from 'lodash';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
@@ -7,7 +8,11 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     await this.$connect();
 
     this.$use(async (params, next) => {
-      if (params.model !== 'User') return next(params);
+      const getInfoUserLoginCondition =
+        _.has(params.args, 'where.email') && params.action === 'findUnique';
+
+      if (params.model !== 'User' || getInfoUserLoginCondition)
+        return next(params);
 
       const result = await next(params);
 
@@ -32,7 +37,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
       const after = Date.now();
 
       console.log(
-        `Query ${params.model}.${params.action} took ${after - before}ms`,
+        `✨✨✨ Query ${params.model}.${params.action} took ${after - before}ms`,
       );
 
       return result;

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Response } from 'express';
 import { PrismaService } from './prisma/prisma.service';
 import * as _ from 'lodash';
+import { ICrudOption } from './types/query.interface';
 
 @Injectable()
 export class BaseService {
@@ -12,7 +13,7 @@ export class BaseService {
     object = object || {};
 
     res.json({
-      code: 200,
+      statusCode: 200,
       results: Object.assign(
         {
           object,
@@ -27,21 +28,18 @@ export class BaseService {
     res: Response,
     objects: Array<T>,
     extras: any = {},
-    option: {
-      offset: number;
-      limit: number;
-      where: any;
-    } = {
-      offset: 0,
-      limit: 10, // Default limit
-      where: {},
-    },
+    option: ICrudOption = {},
   ) {
+    const skip = option.skip ?? 0;
+
+    const take = option.take ?? 10;
+
     const total = objects.length > 0 ? objects.length : 0;
-    const page = _.floor(option.offset / option.limit) + 1;
+
+    const page = _.floor(skip / take) + 1;
 
     res.json({
-      code: 200,
+      statusCode: 200,
       results: Object.assign(
         {
           objects,

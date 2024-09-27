@@ -19,25 +19,22 @@ import { Request, Response } from 'express';
 import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator';
 import { User } from '@prisma/client';
+import { ICrudOption } from 'src/types/query.interface';
+import { GetOptions } from 'src/auth/decorator/get-options.decorator';
 
 @UseGuards(JwtGuard)
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() createDto: CreateDto) {
-    return this.userService.create(createDto);
-  }
-
   @Get()
-  findAll(@Res() res: Response) {
-    return this.userService.findAll(res);
+  getList(@Res() res: Response, @GetOptions() options: ICrudOption) {
+    return this.userService.getList(res, options);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  getItem(@Param('id') id: string, @Res() res: Response) {
+    return this.userService.getItem(res, { where: { id } });
   }
 
   @Get('getme/me')
@@ -46,12 +43,16 @@ export class UserController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDto: UpdateDto) {
-    return this.userService.update(+id, updateDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateDto: UpdateDto,
+    @Res() res: Response,
+  ) {
+    return this.userService.update(res, updateDto, { where: { id } });
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  remove(@Param('id') id: string, @Res() res: Response) {
+    return this.userService.delete(res, { where: { id } });
   }
 }

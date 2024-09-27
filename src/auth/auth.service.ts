@@ -10,8 +10,8 @@ import * as argon2 from 'argon2';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { access } from 'fs';
-import { BaseService } from 'src/base';
 import { Response } from 'express';
+import { BaseService } from 'src/base.service';
 
 @Injectable({})
 export class AuthService extends BaseService {
@@ -28,7 +28,7 @@ export class AuthService extends BaseService {
   async login(dto: AuthDTO, res: Response) {
     const { email, password } = dto;
     try {
-      const holderUser = await this.prisma.user.findFirst({
+      const holderUser = await this.prisma.user.findUnique({
         where: {
           email,
         },
