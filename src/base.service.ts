@@ -48,9 +48,9 @@ export class BaseService {
       ),
       pagination: {
         total,
-        current_page: page,
-        next_page: page + 1,
-        prev_page: page - 1,
+        currentPage: page,
+        nextPage: page + 1,
+        prevPage: page - 1,
         limit: option.limit,
       },
     });

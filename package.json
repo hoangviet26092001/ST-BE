@@ -7,7 +7,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "db:start:local": "docker compose up dev-db -d",
+    "db:start:dev": "docker-compose -f docker-compose.dev.yml up -d",
+    "db:start:pro": "docker-compose -f docker-compose.pro.yml up -d",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -30,6 +31,7 @@
     "argon2": "^0.41.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "cross-env": "^7.0.3",
     "lodash": "^4.17.21",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",

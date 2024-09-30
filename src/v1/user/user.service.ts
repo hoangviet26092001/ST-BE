@@ -10,7 +10,7 @@ import { CrudService } from 'src/crud.service';
 @Injectable()
 export class UserService extends CrudService<
   Prisma.UserDelegate,
-  Omit<User, 'id' & 'createdAt' & 'updatedAt'>
+  Omit<User, 'id' & 'hash'>
 > {
   constructor(private prisma: PrismaService) {
     super(prisma.user);

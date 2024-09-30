@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  pro-db:
+    image: postgres:13
+    ports:
+      - 5435:5432
+    environment:
+      NODE_ENV: production
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: nest-pro
+    networks:
+      - SheCom
+networks:
+  SheCom:

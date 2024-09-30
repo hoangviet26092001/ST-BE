@@ -23,7 +23,15 @@ export interface IModel {
   deleteMany: (args: any) => Prisma.PrismaPromise<any>;
 }
 
-export class CrudService<T extends IModel, D> extends BaseService {
+/**
+ * A generic CRUD service class that provides basic create, update, and other CRUD functionality.
+ * This class is meant to be extended by more specific service classes.
+ *
+ * @template T - The model type that extends `IModel`. Represents the entity that the service operates on.
+ * @template C - The DTO (Data Transfer Object) type for creating new entities.
+ * @template U - The DTO type for updating existing entities. Defaults to the same type as `C` if not provided.
+ */
+export class CrudService<T extends IModel, C, U = C> extends BaseService {
   constructor(model: T) {
     super();
     this.model = model;
@@ -84,7 +92,7 @@ export class CrudService<T extends IModel, D> extends BaseService {
   }
 
   //   // Create new item
-  public async create(res: Response, data: D) {
+  public async create(res: Response, data: C) {
     return await this.exec(
       this.model.create({
         data,
@@ -93,7 +101,7 @@ export class CrudService<T extends IModel, D> extends BaseService {
   }
 
   //   // Update existing item by ID
-  async update(res: Response, params: any, option: ICrudOption) {
+  async update(res: Response, params: U | Partial<U>, option: ICrudOption) {
     await this.exec(
       this.model.findUnique({
         where: option.where,
@@ -132,13 +140,6 @@ export class CrudService<T extends IModel, D> extends BaseService {
 
     return this.onSuccess(res, result);
   }
-
-  //   // Helper to apply create options
-  //   applyCreateOptions(option: ICrudOption = { where: {} }) {
-  //     return {
-  //       transaction: option.transaction,
-  //     };
-  //   }
 
   // Helper to apply find options (for filtering, ordering, and pagination)
   applyFindOptions(option: ICrudOption = {}) {

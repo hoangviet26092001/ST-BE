@@ -7,21 +7,13 @@ services:
     ports:
       - 5434:5432
     environment:
+      NODE_ENV: development
       POSTGRES_HOST_AUTH_METHOD: trust
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: nest
     networks:
       - SheCom
-  test-db:
-    image: postgres:13
-    ports:
-      - 5435:5432
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123
-      POSTGRES_DB: nest
-    networks:
-      - SheCom
+
 networks:
   SheCom:
