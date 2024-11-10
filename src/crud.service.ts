@@ -93,11 +93,13 @@ export class CrudService<T extends IModel, C, U = C> extends BaseService {
 
   //   // Create new item
   public async create(res: Response, data: C) {
-    return await this.exec(
+    const result = await this.exec(
       this.model.create({
         data,
       }),
     );
+
+    return this.onSuccess(res, result);
   }
 
   //   // Update existing item by ID

@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Response } from 'express';
-import { PrismaService } from './prisma/prisma.service';
 import * as _ from 'lodash';
 import { ICrudOption } from './types/query.interface';
 
-@Injectable()
 export class BaseService {
   constructor() {}
 

@@ -34,8 +34,8 @@ export class CrudController<
   service: T;
 
   @Post()
-  create(@Res() res: Response, @GetOptions() options: ICrudOption) {
-    return this.service.getList(res, options);
+  create(@Res() res: Response, @Body() createDTO: C) {
+    return this.service.create(res, createDTO);
   }
 
   @Get()
