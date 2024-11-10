@@ -23,12 +23,4 @@ export class TaskController extends CrudController<TaskService, UpdateDto> {
   ) {
     super(taskService);
   }
-
-  @Delete(':id')
-  async delete(@Param('id') id: string, @Res() res: Response): Promise<void> {
-    this.exceptionService.throwCustomException(
-      'Access denied',
-      HttpStatus.FORBIDDEN,
-    );
-  }
 }
